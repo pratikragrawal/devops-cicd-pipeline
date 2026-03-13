@@ -3,21 +3,27 @@ pipeline {
 
     stages {
 
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/pratikragrawal/devops-cicd-pipeline.git'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 bat 'pip install flask'
             }
         }
 
-        stage('Check Python Version') {
+        stage('Run Tests') {
             steps {
                 bat 'python --version'
             }
         }
 
-        stage('Verify Application File') {
+        stage('Build Docker Image') {
             steps {
-                bat 'dir'
+                bat 'docker build -t devops-app .'
             }
         }
 

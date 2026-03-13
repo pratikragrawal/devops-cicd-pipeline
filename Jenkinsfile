@@ -21,11 +21,8 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                bat 'docker build -t devops-app .'
-            }
-        }
-
+        stage('Push Docker Image') {
+    steps {
+        bat 'docker push pratikragrawal/devops-app:v1'
     }
 }

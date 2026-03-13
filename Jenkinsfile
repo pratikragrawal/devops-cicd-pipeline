@@ -3,21 +3,21 @@ pipeline {
 
     stages {
 
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/pratikragrawal/devops-cicd-pipeline.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 bat 'pip install flask'
             }
         }
 
-        stage('Run Application') {
+        stage('Check Python Version') {
             steps {
-                bat 'python app.py'
+                bat 'python --version'
+            }
+        }
+
+        stage('Verify Application File') {
+            steps {
+                bat 'dir'
             }
         }
 

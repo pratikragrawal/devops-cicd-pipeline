@@ -1,106 +1,95 @@
-from flask import Flask, render_template_string
+from flask import Flask, render_template, jsonify
 from datetime import datetime
+import logging
+import os
 
+# ----------------------------
+# Application Configuration
+# ----------------------------
+class Config:
+    APP_NAME = "DevOps CI/CD Pipeline"
+    VERSION = "1.0"
+    AUTHOR = ["Pratik Agrawal", "Aryan"]
+    PORT = 5000
+
+
+# ----------------------------
+# Initialize Application
+# ----------------------------
 app = Flask(__name__)
+app.config.from_object(Config)
 
-HTML_PAGE = """
-<!DOCTYPE html>
-<html>
-<head>
-<title>DevOps CI/CD Dashboard</title>
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-<style>
-body {
-    font-family: Arial;
-    background: linear-gradient(135deg,#1f4037,#99f2c8);
-    margin:0;
-}
 
-.container{
-    width:80%;
-    margin:auto;
-    text-align:center;
-    padding:40px;
-}
-
-.card{
-    background:white;
-    padding:25px;
-    border-radius:10px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.2);
-    margin-top:20px;
-}
-
-h1{
-    color:#2c3e50;
-}
-
-.status{
-    color:green;
-    font-weight:bold;
-}
-
-.step{
-    display:inline-block;
-    background:#3498db;
-    color:white;
-    padding:10px 15px;
-    margin:5px;
-    border-radius:5px;
-}
-</style>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>🚀 DevOps CI/CD Pipeline Dashboard</h1>
-
-<div class="card">
-<h2>Project Information</h2>
-<p><b>Project:</b> Automated CI/CD Pipeline</p>
-<p><b>Technologies:</b> GitHub • Jenkins • Docker • Kubernetes</p>
-<p><b>Status:</b> <span class="status">Application Running Successfully</span></p>
-<p><b>Server Time:</b> {{time}}</p>
-</div>
-
-<div class="card">
-<h2>CI/CD Workflow</h2>
-
-<span class="step">Developer</span>
-<span class="step">GitHub</span>
-<span class="step">Jenkins</span>
-<span class="step">Docker</span>
-<span class="step">Docker Hub</span>
-<span class="step">Kubernetes</span>
-
-</div>
-
-<div class="card">
-<h2>Team Members</h2>
-<p>Pratik Agrawal</p>
-<p>Aryan</p>
-</div>
-
-</div>
-
-</body>
-</html>
-"""
+# ----------------------------
+# Routes
+# ----------------------------
 
 @app.route("/")
-def home():
-    return render_template_string(HTML_PAGE, time=datetime.now())
+def dashboard():
+    logger.info("Dashboard accessed")
+    return render_template(
+        "index.html",
+        project=app.config["APP_NAME"],
+        version=app.config["VERSION"],
+        time=datetime.now()
+    )
 
-@app.route("/health")
+
+@app.route("/api/health")
 def health():
-    return {"status": "healthy"}
+    logger.info("Health check requested")
+    return jsonify({
+        "status": "healthy",
+        "service": app.config["APP_NAME"],
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    })
 
-@app.route("/version")
+
+@app.route("/api/version")
 def version():
-    return {"version": "1.0", "project": "DevOps CI/CD Pipeline"}
+    return jsonify({
+        "application": app.config["APP_NAME"],
+        "version": app.config["VERSION"],
+        "authors": app.config["AUTHOR"]
+    })
+
+
+@app.route("/api/pipeline")
+def pipeline():
+    return jsonify({
+        "pipeline": [
+            "Developer Commit",
+            "GitHub Repository",
+            "Jenkins CI/CD Pipeline",
+            "Docker Image Build",
+            "Docker Hub Registry",
+            "Kubernetes Deployment"
+        ]
+    })
+
+
+# ----------------------------
+# Error Handling
+# ----------------------------
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Endpoint not found"}), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({"error": "Internal server error"}), 500
+
+
+# ----------------------------
+# Run Application
+# ----------------------------
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    logger.info("Starting DevOps CI/CD Application")
+    app.run(host="0.0.0.0", port=app.config["PORT"])

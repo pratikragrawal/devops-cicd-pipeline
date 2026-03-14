@@ -1,0 +1,45 @@
+body{
+    font-family: Arial;
+    margin:0;
+    background: linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+}
+
+.container{
+    width:80%;
+    margin:auto;
+    text-align:center;
+    padding:40px;
+}
+
+.card{
+    background:white;
+    color:black;
+    padding:25px;
+    border-radius:10px;
+    margin-top:20px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.4);
+}
+
+h1{
+    margin-bottom:30px;
+}
+
+.status{
+    color:green;
+    font-weight:bold;
+}
+
+.pipeline{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.step{
+    background:#3498db;
+    padding:10px 15px;
+    margin:5px;
+    border-radius:5px;
+    color:white;
+}

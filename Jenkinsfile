@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "devops-app"
+        DOCKERHUB_USER = "pratikragrawal"
+        IMAGE_TAG = "v1"
+    }
+
     stages {
 
         stage('Checkout Code') {
@@ -11,18 +17,54 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                bat 'pip install flask'
+                bat 'pip install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                bat 'python --version'
+                bat 'python -m pytest'
             }
         }
 
-        stage('Push Docker Image') {
-    steps {
-        bat 'docker push pratikragrawal/devops-app:v1'
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t %IMAGE_NAME%:%IMAGE_TAG% .'
+            }
+        }
+
+        stage('Tag Image') {
+            steps {
+                bat 'docker tag %IMAGE_NAME%:%IMAGE_TAG% %DOCKERHUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                bat 'docker push %DOCKERHUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%'
+            }
+        }
+
+        stage('Security Scan (Trivy)') {
+            steps {
+                bat 'trivy image %DOCKERHUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                bat 'kubectl apply -f deployment.yaml'
+                bat 'kubectl apply -f service.yaml'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully 🚀'
+        }
+        failure {
+            echo 'Pipeline failed ❌'
+        }
     }
 }

@@ -59,12 +59,12 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-            steps {
-                bat 'kubectl apply -f deployment.yaml --validate=false'
-                bat 'kubectl apply -f service.yaml --validate=false'
-            }
-        }
-    }
+    steps {
+        bat 'set KUBECONFIG=%USERPROFILE%\\.kube\\config && kubectl apply -f deployment.yaml'
+        bat 'set KUBECONFIG=%USERPROFILE%\\.kube\\config && kubectl apply -f service.yaml'
+           }  
+        }    
+}
 
     post {
         success {

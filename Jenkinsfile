@@ -5,6 +5,7 @@ pipeline {
         IMAGE_NAME = "devops-app"
         DOCKERHUB_USER = "pratikragrawal"
         IMAGE_TAG = "v1"
+        DOCKER_PASSWORD = "Pratik@2005"
     }
 
     stages {
@@ -36,6 +37,12 @@ pipeline {
         stage('Tag Image') {
             steps {
                 bat 'docker tag %IMAGE_NAME%:%IMAGE_TAG% %DOCKERHUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%'
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                bat 'echo %DOCKER_PASSWORD% | docker login -u %DOCKERHUB_USER% --password-stdin'
             }
         }
 

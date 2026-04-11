@@ -60,10 +60,9 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
     steps {
-        bat 'set KUBECONFIG=%USERPROFILE%\\.kube\\config && kubectl apply -f deployment.yaml'
-        bat 'set KUBECONFIG=%USERPROFILE%\\.kube\\config && kubectl apply -f service.yaml'
-           }  
-        }    
+        echo 'Deployment will be done manually using kubectl'
+    }
+}
 }
 
     post {

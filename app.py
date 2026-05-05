@@ -19,7 +19,7 @@ def home():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>DevOps Application</title>
+        <title>Demo Application</title>
         <style>
             body {
                 margin: 0;

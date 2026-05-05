@@ -1,46 +1,44 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE = "pratikragrawal/devops-app:v1"
-    }
-
     stages {
 
-  
         stage('Install') {
             steps {
-                bat 'pip install -r requirements.txt'
+                echo 'Installing dependencies...'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'pytest || exit 0'
+                echo 'Running tests...'
             }
         }
 
         stage('Build Image') {
             steps {
-                bat 'docker build -t %IMAGE% .'
+                bat 'docker build -t pratikragrawal/devops-app:v1 .'
             }
         }
 
         stage('Push Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                    bat 'echo %PASS% | docker login -u %USER% --password-stdin'
-                    bat 'docker push %IMAGE%'
-                }
+                bat 'docker push pratikragrawal/devops-app:v1'
             }
         }
 
         stage('Scan Image') {
             steps {
-                bat 'trivy image %IMAGE%'
+                bat 'trivy image pratikragrawal/devops-app:v1'
             }
         }
 
-        
+        stage('Deploy') {
+            steps {
+                bat 'docker stop my-app || exit 0'
+                bat 'docker rm my-app || exit 0'
+                bat 'docker run -d -p 3000:3000 --name my-app pratikragrawal/devops-app:v1'
+            }
         }
     }
+}

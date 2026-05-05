@@ -19,7 +19,7 @@ def home():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Demo Application</title>
+        <title>Devops Application</title>
         <style>
             body {
                 margin: 0;
@@ -91,7 +91,7 @@ def home():
     <body>
 
         <div class="container">
-            <h1>🚀 DevOps Application</h1>
+            <h1>🚀 Demo Application</h1>
             <p>CI/CD Pipeline using Docker, Kubernetes & Trivy</p>
 
             <a href="/dashboard" class="btn primary">View Dashboard</a>

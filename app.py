@@ -116,7 +116,7 @@ def dashboard():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>DevSecOps Dashboard</title>
+        <title>Devops Dashboard</title>
         <style>
             body {
                 margin: 0;

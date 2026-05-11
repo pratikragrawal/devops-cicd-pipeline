@@ -195,7 +195,7 @@ def dashboard():
 
     <body>
 
-    <h1>🚀 Dashboard</h1>
+    <h1>🚀 DevSecOps CI/CD Dashboard</h1>
 
     <div class="section">
         <h2>🔄 Pipeline Flow</h2>

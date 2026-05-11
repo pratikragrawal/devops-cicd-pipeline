@@ -91,7 +91,7 @@ def home():
     <body>
 
         <div class="container">
-            <h1>🚀 Devops Application</h1>
+            <h1>🚀 Devops demo Application</h1>
             <p>CI/CD Pipeline using Docker, Kubernetes & Trivy</p>
 
             <a href="/dashboard" class="btn primary">View Dashboard</a>
@@ -195,7 +195,7 @@ def dashboard():
 
     <body>
 
-    <h1>🚀 DevSecOps CI/CD Dashboard</h1>
+    <h1>🚀 Dashboard</h1>
 
     <div class="section">
         <h2>🔄 Pipeline Flow</h2>

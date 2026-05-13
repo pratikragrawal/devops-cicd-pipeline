@@ -296,7 +296,7 @@ Processor: {platform.processor()}
 @app.route('/open-app')
 def open_app():
     webbrowser.open("http://localhost:5000")
-    return "<h2>Application ✅</h2>"
+    return "<h2>Application Opened ✅</h2>"
 
 # ---------- RUN ----------
 if __name__ == '__main__':
